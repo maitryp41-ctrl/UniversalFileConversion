@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Smart Universal File Converter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#3b8cff"/><path d="M11 24V12l5-4 5 4v12h-3v-7h-4v7z" fill="#fff"/></svg>
+      <span>Smart Universal File Converter</span>
+    </div>
+    <nav>
+      <button type="button" id="navHome">Home</button>
+      <button type="button" id="navAbout">About</button>
+      <button type="button" id="navHelp">Help</button>
+    </nav>
+  </header>
+
+  <main class="card">
+    <!-- 1. Home page (upload) -->
+    <section id="screenUpload" class="screen">
+      <h1>Smart Universal <span class="blue">File Converter</span></h1>
+      <p class="lead">Convert your files easily with direct conversion and intelligent content transformation.</p>
+
+      <label id="dropzone" class="dropzone" tabindex="0">
+        <input type="file" id="fileInput" hidden>
+        <svg class="cloud" viewBox="0 0 64 48" aria-hidden="true"><path d="M50 42H16C8 42 2 36 2 29c0-6 4-11 10-13 1-9 8-14 16-14 8 0 14 5 16 12 8 0 16 5 16 14 0 8-6 14-14 14z" fill="#1677f2"/><path d="M32 36V19m0 0l-7 7m7-7l7 7" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <strong>Drag &amp; Drop your file here</strong>
+        <span class="or">or</span>
+        <span class="btn primary big">Choose File</span>
+        <small>Supported formats: Images, Documents, Audio, Video, Archives and more...</small>
+      </label>
+      <p id="uploadError" class="error" role="alert" hidden></p>
+
+      <ul class="features">
+        <li><i class="fi purple">▤</i><div><b>Multiple Formats</b><small>Supports 20+ conversions</small></div></li>
+        <li><i class="fi green">◎</i><div><b>Smart Detection</b><small>Auto-detects file type</small></div></li>
+        <li><i class="fi blue">⚙</i><div><b>Advanced Conversion</b><small>OCR, Speech-to-Text, TTS</small></div></li>
+        <li><i class="fi violet">★</i><div><b>100% Free</b><small>No subscription required</small></div></li>
+      </ul>
+
+      <div id="historyPanel" class="history" hidden>
+        <div class="hhead"><h3>Recent conversions</h3><button class="link" id="clearHistory" type="button">Clear</button></div>
+        <ul id="historyList"></ul>
+      </div>
+    </section>
+
+    <!-- 2 and 5. File detected, formats, advanced conversion -->
+    <section id="screenSelect" class="screen" hidden>
+      <div class="selgrid" id="selGrid">
+        <div class="panel">
+          <div class="fileRow">
+            <div id="fileIcon"></div>
+            <div class="finfo">
+              <div class="fname" id="fileName"></div>
+              <div class="meta" id="fileType"></div>
+              <div class="meta" id="fileSize"></div>
+            </div>
+            <div class="okBadge" id="okBadge"><span class="tick">✓</span> File uploaded successfully!</div>
+          </div>
+          <hr>
+          <h3>Select Output Format</h3>
+          <div class="tabs" role="tablist">
+            <button type="button" role="tab" id="tabDirect" class="tab on">Direct Conversion</button>
+            <button type="button" role="tab" id="tabAdv" class="tab">Advanced Conversion</button>
+          </div>
+          <div class="options" id="options"></div>
+          <div class="actions">
+            <button class="btn primary big" id="convertBtn" type="button" disabled>Start Conversion →</button>
+          </div>
+          <p class="hint" id="selHint">Select an output format to continue.</p>
+          <button class="link" id="removeBtn" type="button">Choose a different file</button>
+        </div>
+        <aside class="noteBox" id="noteBox" hidden>
+          <div class="noteHead"><svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M12 2L1 21h22z" fill="#e8860c"/><path d="M12 9v6m0 2.5v.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg><h3>Important Note</h3></div>
+          <p id="noteText"></p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 3. Progress -->
+    <section id="screenProgress" class="screen" hidden>
+      <div class="panel progPanel">
+        <div class="gear" aria-hidden="true"><svg viewBox="0 0 24 24" width="40" height="40"><path fill="#1677f2" d="M19.4 13a7.5 7.5 0 000-2l2.1-1.6-2-3.4-2.5 1a7.6 7.6 0 00-1.7-1L15 3h-4l-.4 3a7.6 7.6 0 00-1.7 1l-2.5-1-2 3.4L6.6 11a7.5 7.5 0 000 2l-2.1 1.6 2 3.4 2.5-1a7.6 7.6 0 001.7 1l.4 3h4l.4-3a7.6 7.6 0 001.7-1l2.5 1 2-3.4zM13 15.5a3.5 3.5 0 110-7 3.5 3.5 0 010 7z"/></svg></div>
+        <div class="progMain">
+          <h2 id="progTitle">Converting...</h2>
+          <div class="barRow">
+            <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="barFill"></div></div>
+            <b id="pct">0%</b>
+          </div>
+          <ol class="steps" id="steps"></ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Completed -->
+    <section id="screenDone" class="screen" hidden>
+      <div class="banner">
+        <span class="bigtick">✓</span>
+        <div><h2>Conversion Completed!</h2><p>Your file has been converted successfully.</p></div>
+      </div>
+      <div class="doneGrid">
+        <div class="panel outCard">
+          <div id="outIcon"></div>
+          <dl>
+            <dt>Output File</dt><dd id="outName"></dd>
+            <dt>File Type</dt><dd id="outType"></dd>
+            <dt>File Size</dt><dd id="outSize"></dd>
+          </dl>
+        </div>
+        <div class="doneBtns">
+          <a class="btn green big" id="downloadBtn" href="#">⬇ Download File</a>
+          <button class="btn outline big" id="againBtn" type="button">⟳ Convert Another File</button>
+        </div>
+      </div>
+      <p id="outNote" class="hint"></p>
+    </section>
+  </main>
+
+  <dialog id="aboutDlg"><h3>About</h3><p>Smart Universal File Converter converts files directly (images, documents, audio, video) and transforms content intelligently (PDF or image to MP3, MP3 or video to DOCX, ZIP to PDF).</p><p>This is the prototype for Software Engineering Practical 9.</p><button class="btn primary" data-close>Close</button></dialog>
+  <dialog id="helpDlg"><h3>Help</h3><ol><li>Drag and drop a file, or choose one.</li><li>Pick an output format under Direct or Advanced Conversion.</li><li>Press Start Conversion and wait for the steps to finish.</li><li>Download the converted file.</li></ol><p>Advanced conversions that use OCR or speech recognition depend on how clear the source is.</p><button class="btn primary" data-close>Close</button></dialog>
+
+  <footer>Prototype: image-to-image and image-to-PDF run in your browser. Other conversions are simulated and download a demo text file.</footer>
+  <script src="script.js"></script>
+</body>
+</html>
